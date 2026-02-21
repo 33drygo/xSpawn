@@ -10,16 +10,10 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class SpawnListener implements Listener {
 
-    private final SpawnManager spawnManager;
-
-    public SpawnListener(SpawnManager spawnManager) {
-        this.spawnManager = spawnManager;
-    }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Location spawn = spawnManager.getFirstSpawn();
+        Location spawn = SpawnManager.getFirstSpawn();
         if (player.hasPlayedBefore()) return;
         if (spawn != null) {
             player.teleport(spawn);
@@ -29,7 +23,14 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        Location spawn = spawnManager.getSpawnFor(player);
+
+        Location bedSpawn = player.getBedSpawnLocation();
+        if (bedSpawn != null) {
+            event.setRespawnLocation(bedSpawn);
+            return;
+        }
+
+        Location spawn = SpawnManager.getSpawnFor(player);
         if (spawn != null) {
             event.setRespawnLocation(spawn);
         }

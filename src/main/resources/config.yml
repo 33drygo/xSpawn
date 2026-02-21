@@ -1,2 +1,3 @@
 settings:
   tp_to_spectator: false
+  bed_respawn: false
