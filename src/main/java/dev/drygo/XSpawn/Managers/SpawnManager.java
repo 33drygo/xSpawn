@@ -20,13 +20,13 @@ import java.util.List;
 
 public class SpawnManager {
 
-    private final XSpawn plugin;
-    private final File spawnFile;
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private JsonObject spawnsData;
+    private static XSpawn plugin;
+    private static File spawnFile;
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static JsonObject spawnsData;
 
-    public SpawnManager(XSpawn plugin) {
-        this.plugin = plugin;
+    public static void init(XSpawn plugin) {
+        SpawnManager.plugin = plugin;
         File pluginFolder = plugin.getDataFolder();
         if (!pluginFolder.exists()) {
             pluginFolder.mkdirs();
@@ -35,15 +35,15 @@ public class SpawnManager {
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
-        this.spawnFile = new File(dataFolder, "spawns.json");
+        spawnFile = new File(dataFolder, "spawns.json");
     }
 
-    private JsonObject getWorldSpawnToJson() {
+    private static JsonObject getWorldSpawnToJson() {
         Location spawn = Bukkit.getWorlds().getFirst().getSpawnLocation();
         return locToJson(spawn);
     }
 
-    public void loadSpawns() {
+    public static void loadSpawns() {
         if (!spawnFile.exists()) {
             spawnsData = new JsonObject();
             spawnsData.add("first", getWorldSpawnToJson());
@@ -60,7 +60,7 @@ public class SpawnManager {
         }
     }
 
-    public void saveSpawns() {
+    public static void saveSpawns() {
         try (FileWriter writer = new FileWriter(spawnFile)) {
             gson.toJson(spawnsData, writer);
         } catch (IOException e) {
@@ -69,18 +69,18 @@ public class SpawnManager {
         }
     }
 
-    public void setFirstSpawn(Location loc) {
+    public static void setFirstSpawn(Location loc) {
         spawnsData.add("first", locToJson(loc));
         saveSpawns();
     }
 
-    public void setPlayerSpawn(String playerName, Location loc) {
+    public static void setPlayerSpawn(String playerName, Location loc) {
         JsonObject playerSpawns = spawnsData.getAsJsonObject("player");
         playerSpawns.add(playerName.toLowerCase(), locToJson(loc));
         saveSpawns();
     }
 
-    public void setTeamSpawn(Team team, Location loc) {
+    public static void setTeamSpawn(Team team, Location loc) {
         if (!plugin.isWorkingXTeams()) {
             plugin.getLogger().warning("Failed on setTeamSpawn, xTeams not installed.");
             return;
@@ -90,7 +90,7 @@ public class SpawnManager {
         saveSpawns();
     }
 
-    public Location getSpawnFor(Player player) {
+    public static Location getSpawnFor(Player player) {
         JsonObject playerSpawns = spawnsData.getAsJsonObject("player");
         if (playerSpawns.has(player.getName().toLowerCase())) {
             return jsonToLoc(playerSpawns.getAsJsonObject(player.getName().toLowerCase()));
@@ -114,14 +114,14 @@ public class SpawnManager {
 
         return null;
     }
-    public Location getFirstSpawn() {
+    public static Location getFirstSpawn() {
         if (spawnsData.has("first") && !spawnsData.get("first").isJsonNull()) {
             return jsonToLoc(spawnsData.getAsJsonObject("first"));
         }
         return null;
     }
 
-    public Location getTeamSpawn(Team team) {
+    public static Location getTeamSpawn(Team team) {
         if (!plugin.isWorkingXTeams()) {
             plugin.getLogger().warning("Failed on setTeamSpawn, xTeams not installed.");
             return null;
@@ -133,7 +133,7 @@ public class SpawnManager {
         return null;
     }
 
-    public Location getPlayerSpawn(String playerName) {
+    public static Location getPlayerSpawn(String playerName) {
         JsonObject players = spawnsData.getAsJsonObject("player");
         if (players.has(playerName.toLowerCase())) {
             return jsonToLoc(players.getAsJsonObject(playerName.toLowerCase()));
@@ -141,12 +141,12 @@ public class SpawnManager {
         return null;
     }
 
-    public void removeFirstSpawn() {
+    public static void removeFirstSpawn() {
         spawnsData.add("first", null);
         saveSpawns();
     }
 
-    public void removeTeamSpawn(Team team) {
+    public static void removeTeamSpawn(Team team) {
         if (!plugin.isWorkingXTeams()) {
             plugin.getLogger().warning("Failed on setTeamSpawn, xTeams not installed.");
             return;
@@ -155,12 +155,12 @@ public class SpawnManager {
         saveSpawns();
     }
 
-    public void removePlayerSpawn(String playerName) {
+    public static void removePlayerSpawn(String playerName) {
         spawnsData.getAsJsonObject("player").remove(playerName.toLowerCase());
         saveSpawns();
     }
 
-    private JsonObject locToJson(Location loc) {
+    private static JsonObject locToJson(Location loc) {
         JsonObject obj = new JsonObject();
         obj.addProperty("world", loc.getWorld().getName());
         obj.addProperty("x", loc.getX());
@@ -171,7 +171,7 @@ public class SpawnManager {
         return obj;
     }
 
-    private Location jsonToLoc(JsonObject obj) {
+    private static Location jsonToLoc(JsonObject obj) {
         World world = Bukkit.getWorld(obj.get("world").getAsString());
         double x = obj.get("x").getAsDouble();
         double y = obj.get("y").getAsDouble();

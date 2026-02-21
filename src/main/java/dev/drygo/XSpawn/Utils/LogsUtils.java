@@ -4,20 +4,20 @@ import dev.drygo.XSpawn.XSpawn;
 import org.bukkit.Bukkit;
 
 public class LogsUtils {
-    private final XSpawn plugin;
+    private static XSpawn plugin;
 
-    public LogsUtils(XSpawn plugin) {
-        this.plugin = plugin;
+    public static void init(XSpawn plugin) {
+        LogsUtils.plugin = plugin;
     }
 
-    public void sendStartupMessage() {
+    public static void sendStartupMessage() {
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor(" "));
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor("&9&lx&r&f&lSpawn #a0ff72plugin enabled!"));
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor("#fff18dVersion: #ffffff" + plugin.version));
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor("#fff18dDeveloped by: #ffffff" + String.join(", ", plugin.getDescription().getAuthors())));
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor(" "));
     }
-    public void sendShutdownMessage() {
+    public static void sendShutdownMessage() {
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor(" "));
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor("&9&lx&r&f&lSpawn #ff7272plugin disabled!"));
         Bukkit.getConsoleSender().sendMessage(ChatUtils.formatColor("#fff18dVersion: #ffffff" + plugin.version));

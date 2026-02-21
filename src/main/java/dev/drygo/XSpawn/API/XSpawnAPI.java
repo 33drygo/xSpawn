@@ -7,49 +7,43 @@ import org.bukkit.entity.Player;
 
 public class XSpawnAPI {
 
-    private static SpawnManager spawnManager;
-
-    public static void init(SpawnManager manager) {
-        spawnManager = manager;
-    }
-
     public static void setFirstSpawn(Location location) {
-        spawnManager.setFirstSpawn(location);
+        SpawnManager.setFirstSpawn(location);
     }
 
     public static Location getFirstSpawn() {
-        return spawnManager.getFirstSpawn();
+        return SpawnManager.getFirstSpawn();
     }
 
     public static void removeFirstSpawn() {
-        spawnManager.removeFirstSpawn();
+        SpawnManager.removeFirstSpawn();
     }
 
     public static void setPlayerSpawn(String playerName, Location location) {
-        spawnManager.setPlayerSpawn(playerName, location);
+        SpawnManager.setPlayerSpawn(playerName, location);
     }
 
     public static Location getPlayerSpawn(String playerName) {
-        return spawnManager.getPlayerSpawn(playerName);
+        return SpawnManager.getPlayerSpawn(playerName);
     }
 
     public static void removePlayerSpawn(String playerName) {
-        spawnManager.removePlayerSpawn(playerName);
+        SpawnManager.removePlayerSpawn(playerName);
     }
 
     public static void setTeamSpawn(Team team, Location location) {
-        spawnManager.setTeamSpawn(team, location);
+        SpawnManager.setTeamSpawn(team, location);
     }
 
     public static Location getTeamSpawn(Team team) {
-        return spawnManager.getTeamSpawn(team);
+        return SpawnManager.getTeamSpawn(team);
     }
 
     public static void removeTeamSpawn(Team team) {
-        spawnManager.removeTeamSpawn(team);
+        SpawnManager.removeTeamSpawn(team);
     }
 
     public static Location getSpawnFor(Player player) {
-        return spawnManager.getSpawnFor(player);
+        return SpawnManager.getSpawnFor(player);
     }
 }

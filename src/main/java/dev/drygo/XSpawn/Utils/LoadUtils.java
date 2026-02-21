@@ -9,49 +9,43 @@ import dev.drygo.XSpawn.XSpawn;
 import org.bukkit.Bukkit;
 
 public class LoadUtils {
-    private final XSpawn plugin;
-    private final ConfigManager configManager;
-    private final SpawnManager spawnManager;
-    private final ChatUtils chatUtils;
+    private  static XSpawn plugin;
 
-    public LoadUtils(XSpawn plugin, ConfigManager configManager, SpawnManager spawnManager, ChatUtils chatUtils) {
-        this.plugin = plugin;
-        this.configManager = configManager;
-        this.spawnManager = spawnManager;
-        this.chatUtils = chatUtils;
-    }
-
-    public void loadFeatures() {
+    public static void loadFeatures() {
         loadFiles();
         loadCommand();
         loadListeners();
         loadXTeams();
     }
 
-    public void loadFiles() {
-        configManager.loadConfig();
-        configManager.reloadMessages();
-        configManager.setPrefix(configManager.getMessageConfig().getString("prefix"));
-        spawnManager.loadSpawns();
+    public static void loadFiles() {
+        ConfigManager.loadConfig();
+        ConfigManager.reloadMessages();
+        ConfigManager.setPrefix(ConfigManager.getMessageConfig().getString("prefix"));
+        SpawnManager.loadSpawns();
     }
-    private void loadCommand() {
+    private static void loadCommand() {
         if (plugin.getCommand("xspawn") != null) {
             plugin.getLogger().info("✅ Plugin command /xspawn successfully registered.");
-            plugin.getCommand("xspawn").setExecutor(new XSpawnCommand(chatUtils, this, spawnManager, plugin, configManager));
+            plugin.getCommand("xspawn").setExecutor(new XSpawnCommand(plugin));
             plugin.getCommand("xspawn").setTabCompleter(new XSpawnTabCompleter(plugin));
         } else {
             plugin.getLogger().severe("❌ Error: /xspawn command is no registered in plugin.yml");
         }
     }
 
-    private void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new SpawnListener(spawnManager), plugin);
+    private static void loadListeners() {
+        plugin.getServer().getPluginManager().registerEvents(new SpawnListener(), plugin);
     }
 
-    private void loadXTeams() {
+    private static void loadXTeams() {
         if (Bukkit.getPluginManager().getPlugin("xTeams") != null) {
             plugin.getLogger().info("✅ xTeams detected. xTeams hook successfully loaded.");
             plugin.workingXTeams = true;
         }
+    }
+
+    public static void init(XSpawn plugin) {
+        LoadUtils.plugin = plugin;
     }
 }

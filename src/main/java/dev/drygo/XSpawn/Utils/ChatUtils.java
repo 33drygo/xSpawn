@@ -2,6 +2,11 @@ package dev.drygo.XSpawn.Utils;
 
 import dev.drygo.XSpawn.Managers.ConfigManager;
 import dev.drygo.XSpawn.XSpawn;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -9,12 +14,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChatUtils {
-    private final ConfigManager configManager;
-    private final XSpawn plugin;
+    private static XSpawn plugin;
+    private static final MiniMessage MINI = MiniMessage.miniMessage();
 
-    public ChatUtils(ConfigManager configManager, XSpawn plugin) {
-        this.configManager = configManager;
-        this.plugin = plugin;
+    public static void init(XSpawn plugin) {
+        ChatUtils.plugin = plugin;
     }
 
     public static String formatColor(String message) {
@@ -38,29 +42,61 @@ public class ChatUtils {
         matcher.appendTail(buffer);
         return buffer.toString();
     }
-    public String getMessage(String path, Player player) {
-        if (configManager == null) {
-            throw new IllegalStateException("ConfigManager no está inicializado.");
-        }
+    public static String getMessage(String path, Player player) {
 
-        String message = configManager.getMessageConfig().isList(path)
-                ? String.join("\n", configManager.getMessageConfig().getStringList(path))
-                : configManager.getMessageConfig().getString(path);
+        String message = ConfigManager.getMessageConfig().isList(path)
+                ? String.join("\n", ConfigManager.getMessageConfig().getStringList(path))
+                : ConfigManager.getMessageConfig().getString(path);
 
         if (message == null || message.isEmpty()) {
             plugin.getLogger().warning("[WARNING] Message not found: " + path);
-            return ChatUtils.formatColor("&r" + configManager.getPrefix() + " #FF0000&l[ERROR] #FF3535Message not found: " + path);
+            return ChatUtils.formatColor("&r" + ConfigManager.getPrefix() + " #FF0000&l[ERROR] #FF3535Message not found: " + path);
         }
 
-        // Reemplazar placeholders
-        if (player != null) {
-            message = message.replace("%player%", player.getName());
-        } else {
-            message = message.replace("%player%", "Unknown");
-        }
+        message = message.replace("%player%", player != null ? player.getName() : "Unknown");
 
-        message = message.replace("%prefix%", configManager.getPrefix());
+        /*
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            message = PlaceholderAPI.setPlaceholders(player, message);
+
+         */
+
+        message = message.replace("%prefix%", ConfigManager.getPrefix());
 
         return ChatUtils.formatColor(message);
+    }
+
+    public static Component getMiniMessage(String path, Player player, TagResolver... extraResolvers) {
+
+        String message = ConfigManager.getMessageConfig().isList(path)
+                ? String.join("\n", ConfigManager.getMessageConfig().getStringList(path))
+                : ConfigManager.getMessageConfig().getString(path);
+
+        if (message == null || message.isEmpty()) {
+            plugin.getLogger().warning("[WARNING] Message not found: " + path);
+
+            return MINI.deserialize(
+                    "<reset><prefix> <red><bold>[ERROR]</bold> <dark_red>Message not found: <gray>" + path,
+                    Placeholder.parsed("prefix", ConfigManager.getPrefix())
+            );
+        }
+
+        /*
+        if (player != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
+        }
+         */
+
+        TagResolver baseResolvers = TagResolver.builder()
+                .resolver(Placeholder.parsed("prefix", ConfigManager.getPrefix()))
+                .resolver(Placeholder.parsed("player", player != null ? player.getName() : "Unknown"))
+                .build();
+
+        TagResolver resolver = TagResolver.builder()
+                .resolver(baseResolvers)
+                .resolvers(extraResolvers)
+                .build();
+
+        return MINI.deserialize(message, resolver);
     }
 }

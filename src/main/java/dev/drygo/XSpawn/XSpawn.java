@@ -12,26 +12,25 @@ public class XSpawn extends JavaPlugin {
     public String prefix;
     public String version;
     public boolean workingXTeams;
-    private LogsUtils logsUtils;
 
     @Override
     public void onEnable() {
         version = getDescription().getVersion();
         workingXTeams = false;
-        this.logsUtils = new LogsUtils(this);
-        ConfigManager configManager = new ConfigManager(this);
-        ChatUtils chatUtils = new ChatUtils(configManager, this);
-        SpawnManager spawnManager = new SpawnManager(this);
-        LoadUtils loadUtils = new LoadUtils(this, configManager, spawnManager, chatUtils);
-        XSpawnAPI.init(spawnManager);
+        LogsUtils.init(this);
+        ConfigManager.init(this);
+        ChatUtils.init(this);
+        SpawnManager.init(this);
+        LoadUtils.init(this);
+        XSpawnAPI.init();
 
-        loadUtils.loadFeatures();
-        logsUtils.sendStartupMessage();
+        LoadUtils.loadFeatures();
+        LogsUtils.sendStartupMessage();
     }
 
     @Override
     public void onDisable() {
-        logsUtils.sendShutdownMessage();
+        LogsUtils.sendShutdownMessage();
     }
 
     public boolean isWorkingXTeams() {

@@ -8,12 +8,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 
 public class ConfigManager {
-    private final XSpawn plugin;
-    private FileConfiguration messagesConfig;
+    private static XSpawn plugin;
+    private static FileConfiguration messagesConfig;
 
-    public ConfigManager(XSpawn plugin) { this.plugin = plugin; }
+    public static void init(XSpawn plugin) {
+        ConfigManager.plugin = plugin;
+    }
 
-    public void loadConfig() {
+    public static void loadConfig() {
         try {
             plugin.saveDefaultConfig();
             plugin.reloadConfig();
@@ -23,7 +25,7 @@ public class ConfigManager {
             e.printStackTrace();
         }
     }
-    public void reloadMessages() {
+    public static void reloadMessages() {
         try {
             File messagesFile = new File(plugin.getDataFolder(), "messages.yml");
             if (!messagesFile.exists()) {
@@ -41,9 +43,9 @@ public class ConfigManager {
         }
     }
 
-    public String getPrefix() { return plugin.prefix; }
-    public void setPrefix(String prefix) { plugin.prefix = prefix; }
-    public FileConfiguration getMessageConfig() {
+    public static String getPrefix() { return plugin.prefix; }
+    public static void setPrefix(String prefix) { plugin.prefix = prefix; }
+    public static FileConfiguration getMessageConfig() {
         return messagesConfig;
     }
 }
