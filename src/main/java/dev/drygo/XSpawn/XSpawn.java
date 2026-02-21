@@ -22,7 +22,6 @@ public class XSpawn extends JavaPlugin {
         ChatUtils.init(this);
         SpawnManager.init(this);
         LoadUtils.init(this);
-        XSpawnAPI.init();
 
         LoadUtils.loadFeatures();
         LogsUtils.sendStartupMessage();
