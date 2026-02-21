@@ -8,6 +8,8 @@ import dev.drygo.XSpawn.Managers.SpawnManager;
 import dev.drygo.XSpawn.XSpawn;
 import org.bukkit.Bukkit;
 
+import java.util.Objects;
+
 public class LoadUtils {
     private  static XSpawn plugin;
 
@@ -27,15 +29,15 @@ public class LoadUtils {
     private static void loadCommand() {
         if (plugin.getCommand("xspawn") != null) {
             plugin.getLogger().info("✅ Plugin command /xspawn successfully registered.");
-            plugin.getCommand("xspawn").setExecutor(new XSpawnCommand(plugin));
-            plugin.getCommand("xspawn").setTabCompleter(new XSpawnTabCompleter(plugin));
+            Objects.requireNonNull(plugin.getCommand("xspawn")).setExecutor(new XSpawnCommand(plugin));
+            Objects.requireNonNull(plugin.getCommand("xspawn")).setTabCompleter(new XSpawnTabCompleter(plugin));
         } else {
             plugin.getLogger().severe("❌ Error: /xspawn command is no registered in plugin.yml");
         }
     }
 
     private static void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new SpawnListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new SpawnListener(plugin), plugin);
     }
 
     private static void loadXTeams() {

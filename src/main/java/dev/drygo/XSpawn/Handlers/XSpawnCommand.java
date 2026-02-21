@@ -41,7 +41,7 @@ public class  XSpawnCommand implements CommandExecutor {
             case "del" -> handleDel(sender, args, label);
             case "reload" -> handleReload(sender, label, args);
             case "info" -> {
-                if (!sender.hasPermission("xspawn.command.info") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+                if (!sender.hasPermission("xspawn.info") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
                     sender.sendMessage(ChatUtils.getMessage("error.no_permission", null)
                             .replace("%command%", label + " " + String.join(" ", args)));
                     return true;
@@ -49,7 +49,7 @@ public class  XSpawnCommand implements CommandExecutor {
                 handleInfo(sender);
             }
             case "help" -> {
-                if (!sender.hasPermission("xspawn.command.help") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+                if (!sender.hasPermission("xspawn.help") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
                     sender.sendMessage(ChatUtils.getMessage("error.no_permission", null)
                             .replace("%command%", label + " " + String.join(" ", args)));
                     return true;
@@ -69,7 +69,7 @@ public class  XSpawnCommand implements CommandExecutor {
             sender.sendMessage(ChatUtils.getMessage("error.only_player", null));
             return;
         }
-        if (!sender.hasPermission("xspawn.command.set") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+        if (!sender.hasPermission("xspawn.set") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
             sender.sendMessage(ChatUtils.getMessage("error.no_permission", null)
                     .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
@@ -139,7 +139,7 @@ public class  XSpawnCommand implements CommandExecutor {
             sender.sendMessage(ChatUtils.getMessage("error.only_player", null));
             return;
         }
-        if (!sender.hasPermission("xspawn.command.tp") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+        if (!sender.hasPermission("xspawn.tp") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
             sender.sendMessage(ChatUtils.getMessage("error.no_permission", null)
                     .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
@@ -209,7 +209,7 @@ public class  XSpawnCommand implements CommandExecutor {
     }
 
     private void handleDel(CommandSender sender, String[] args, String label) {
-        if (!sender.hasPermission("xspawn.command.del") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+        if (!sender.hasPermission("xspawn.del") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
             sender.sendMessage(ChatUtils.getMessage("error.no_permission", null)
                     .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
@@ -283,7 +283,7 @@ public class  XSpawnCommand implements CommandExecutor {
         }
     }
     private void handleReload(CommandSender sender, String label, String[] args) {
-        if (!sender.hasPermission("xspawn.command.reload") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+        if (!sender.hasPermission("xspawn.reload") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
             sender.sendMessage(ChatUtils.getMessage("error.no_permission", null)
                     .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
@@ -305,27 +305,25 @@ public class  XSpawnCommand implements CommandExecutor {
         }
         p.teleport(l);
     }
-    private boolean handleInfo(CommandSender sender) {
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&8                           #5771ff&lx&r&f&lSpawn &8» &r&fInfo"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("#fff18d&l                           ᴍᴀᴅᴇ ʙʏ"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f                           xDrygo #707070» &7&o(@eldrygo)"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("#fff18d&l                  ʀᴜɴɴɪɴɢ ᴘʟᴜɢɪɴ ᴠᴇʀꜱɪᴏɴ"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f                                    " + plugin.version));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("#fff18d&l                      ᴠᴇʀꜱɪᴏɴ ᴄʜᴀɴɢᴇꜱ"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f            #7070703. #FFFAABFirst public version. Now in Modrinth."));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f            #7070701. #FFFAABFirst, per player, per team spawn manager."));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f            #7070702. #FFFAABUpdated xTeams version to 1.3.1"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("#fff18d&l               ᴅʀʏɢᴏ'ꜱ ɴᴏᴛᴇ ᴏꜰ ᴛʜᴇ ᴠᴇʀꜱɪᴏɴ"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f  #FFFAAB             Welcome to xSpawn, this plugin is 99% made"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&f  #FFFAAB             by the api, but the first spawn feature is cool."));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        sender.sendMessage(dev.drygo.XTeams.Utils.ChatUtils.formatColor("&7"));
-        return false;
+    private void handleInfo(CommandSender sender) {
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("&8                           #5771ff&lx&r&f&lSpawn &8» &r&fInfo"));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("#fff18d&l                           ᴍᴀᴅᴇ ʙʏ"));
+        sender.sendMessage(ChatUtils.formatColor("&f                   Drygo #707070» &7&o(@33drygo / drygo.dev)"));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("#fff18d&l                  ʀᴜɴɴɪɴɢ ᴘʟᴜɢɪɴ ᴠᴇʀꜱɪᴏɴ"));
+        sender.sendMessage(ChatUtils.formatColor("&f                                    " + plugin.version));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("#fff18d&l                      ᴠᴇʀꜱɪᴏɴ ᴄʜᴀɴɢᴇꜱ"));
+        sender.sendMessage(ChatUtils.formatColor("&f            #7070701. #FFFAABInteral QoL fixes."));
+        sender.sendMessage(ChatUtils.formatColor("&f            #7070702. #FFFAABAdd bed respawn compatibility with config."));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("#fff18d&l               ᴅʀʏɢᴏ'ꜱ ɴᴏᴛᴇ ᴏꜰ ᴛʜᴇ ᴠᴇʀꜱɪᴏɴ"));
+        sender.sendMessage(ChatUtils.formatColor("&f  #FFFAAB             Hi, I needed the bed respawn feature for a proyect"));
+        sender.sendMessage(ChatUtils.formatColor("&f  #FFFAAB            but I thought it would be cool for the final version."));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
+        sender.sendMessage(ChatUtils.formatColor("&7"));
     }
 }

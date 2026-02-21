@@ -1,6 +1,7 @@
 package dev.drygo.XSpawn.Listeners;
 
 import dev.drygo.XSpawn.Managers.SpawnManager;
+import dev.drygo.XSpawn.XSpawn;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class SpawnListener implements Listener {
+
+    private final XSpawn plugin;
+
+    public SpawnListener(XSpawn plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -25,7 +32,7 @@ public class SpawnListener implements Listener {
         Player player = event.getPlayer();
 
         Location bedSpawn = player.getBedSpawnLocation();
-        if (bedSpawn != null) {
+        if (bedSpawn != null && plugin.getConfig().getBoolean("", false)) {
             event.setRespawnLocation(bedSpawn);
             return;
         }

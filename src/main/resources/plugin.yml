@@ -1,11 +1,13 @@
 name: xSpawn
 main: dev.drygo.XSpawn.XSpawn
-version: 1.0
+version: 1.0.1
 api-version: 1.20
 authors:
   - Drygo
 soft-depend:
   - xTeams
+description: "Set custom spawnpoints per player, per xTeams team, or global. Useful for Events!"
+website: https://modrinth.com/plugin/xspawn
 commands:
   xspawn:
     aliases:
@@ -16,15 +18,15 @@ permissions:
   xspawn.admin:
     default: false
     children:
-      xspawn.command.set:
+      xspawn.set:
         default: false
-      xspawn.command.tp:
+      xspawn.tp:
         default: false
-      xspawn.command.del:
+      xspawn.del:
         default: false
-      xspawn.command.reload:
+      xspawn.reload:
         default: false
-      xspawn.command.help:
+      xspawn.help:
         default: false
-      xspawn.command.info:
+      xspawn.info:
         default: false
