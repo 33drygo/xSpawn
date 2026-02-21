@@ -32,7 +32,7 @@ public class SpawnListener implements Listener {
         Player player = event.getPlayer();
 
         Location bedSpawn = player.getBedSpawnLocation();
-        if (bedSpawn != null && plugin.getConfig().getBoolean("", false)) {
+        if (bedSpawn != null && plugin.getConfig().getBoolean("settings.bed_respawn", false)) {
             event.setRespawnLocation(bedSpawn);
             return;
         }
