@@ -25,6 +25,7 @@ public class XSpawn extends JavaPlugin {
 
         LoadUtils.loadFeatures();
         LogsUtils.sendStartupMessage();
+        LogsUtils.sendUpdateMessage();
     }
 
     @Override
